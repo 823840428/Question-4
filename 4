@@ -1,0 +1,27 @@
+import pandas as pd
+
+# below we implememnt 4-connectivity
+# deep first search
+def dfs(grid, i, j, m, n, num):
+    if i < 0 or j < 0 or i >= m or j >= n or grid[i][j] == '0': return
+    grid[i][j] = '0'
+    ans[i][j] = num
+    dfs(grid, i - 1, j, m, n, num)
+    dfs(grid, i, j - 1, m, n, num)
+    dfs(grid, i + 1, j, m, n, num)
+    dfs(grid, i, j + 1, m, n, num)
+# get input data
+grid = []
+with open('./input_question_4', "rt") as f:
+    for line in f:
+        grid.append(line.split())
+m, n = len(grid), len(grid[0])
+num = 0 # number of connected group
+ans = [[0 for i in range(n)] for j in range(m)]
+for i in range(m):
+    for j in range(n):
+        if grid[i][j] == '1':
+            num += 1
+            dfs(grid, i, j, m, n, num)
+ans = pd.DataFrame(ans)
+ans.to_csv('./output_question_4', index=None, header=None, sep = ' ')
